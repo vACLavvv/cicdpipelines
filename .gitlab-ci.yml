@@ -17,6 +17,12 @@ type test:
     script: 
         - echo "test 3"
 
+post_build_test: 
+    stage: deploy_test 
+    script:  
+        - cat build/result.txt 
+        - echo "Post-build test passed"
+
 build:
     stage: build 
     script:
