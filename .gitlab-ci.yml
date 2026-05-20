@@ -32,28 +32,19 @@ post_build_test:
     script:  
         - touch result.txt
 
-deploy dev:
-    stage: dev
-    script:
-        - echo "running ./build.sh"
-    when: manual
-    only:
-        refs:
-            - tags
-            - master
-            - /^release.*$/
-            
-deploy stage:
+deploy website:
     stage: stage
     script:
-        - echo "running ./build.sh"
+      - cp -rf ./html/* /var/www/html
     when: manual
+    tags:
+      - first_runner
     only:
         refs:
             - tags
             - master
             - /^release.*$/
-
+          
 deploy prod:
     stage: prod
     script:
