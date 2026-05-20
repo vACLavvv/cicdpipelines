@@ -2,6 +2,9 @@ stages:
     - test
     - build
     - deploy_test
+    - dev
+    - stage
+    - prod
 
 unit test:
     stage: test 
@@ -18,14 +21,47 @@ type test:
     script: 
         - echo "test 3"
 
-post_build_test: 
-    stage: deploy_test 
-    script:  
-        - touch result.txt
-
 build:
     stage: build 
     script:
         - ./build.sh
     when: manual
+
+post_build_test: 
+    stage: deploy_test 
+    script:  
+        - touch result.txt
+
+deploy dev:
+    stage: dev
+    script:
+        - echo "running ./build.sh"
+    when: manual
+    only:
+        refs:
+            - tags
+            - master
+            - /^release.*$/
+            
+deploy stage:
+    stage: stage
+    script:
+        - echo "running ./build.sh"
+    when: manual
+    only:
+        refs:
+            - tags
+            - master
+            - /^release.*$/
+
+deploy prod:
+    stage: prod
+    script:
+        - echo "running ./build.sh"
+    when: manual
+    only:
+        refs:
+            - tags
+            - master
+
    
