@@ -21,12 +21,6 @@ type test:
     script: 
         - echo "test 3"
 
-build:
-    stage: build 
-    script:
-        - ./build.sh
-    when: manual
-
 post_build_test: 
     stage: deploy_test 
     script:  
@@ -63,5 +57,11 @@ deploy prod:
         refs:
             - tags
             - master
+
+build:
+    stage: build 
+    script:
+        - ./build.sh
+    when: manual
 
    
