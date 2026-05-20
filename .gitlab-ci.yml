@@ -19,7 +19,13 @@ linter:
 type test:
     stage: test 
     script: 
-        - echo "test 3"
+        - echo "test 3"\
+
+build:
+    stage: build 
+    script:
+        - ./build.sh
+    when: manual
 
 post_build_test: 
     stage: deploy_test 
@@ -58,10 +64,6 @@ deploy prod:
             - tags
             - master
 
-build:
-    stage: build 
-    script:
-        - ./build.sh
-    when: manual
+
 
    
