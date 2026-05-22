@@ -49,6 +49,7 @@ deploy website:
     refs:
       - tags
       - master
+      - newpipeline
       - /^release.*$/
 
 deploy prod:
