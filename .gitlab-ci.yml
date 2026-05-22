@@ -45,12 +45,6 @@ deploy website:
   when: manual
   tags:
     - first_runner
-  only:
-    refs:
-      - tags
-      - master
-      - newpipeline
-      - /^release.*$/
 
 deploy prod:
   stage: prod
