@@ -1,60 +1,65 @@
 stages:
-    - test
-    - build
-    - deploy_test
-    - dev
-    - stage
-    - prod
+  - test
+  - build
+  - deploy_test
+  - deploy
+  - prod
 
 unit test:
-    stage: test 
-    script: 
-        - echo "test 1"
+  stage: test
+  script:
+    - echo "test 1"
 
 linter:
-    stage: test 
-    script: 
-        - echo "test 2"
+  stage: test
+  script:
+    - echo "test 2"
 
 type test:
-    stage: test 
-    script: 
-        - echo "test 3"\
+  stage: test
+  script:
+    - echo "test 3"
 
 build:
-    stage: build 
-    script:
-        - ./build.sh
-    when: manual
+  stage: build
+  script:
+    - chmod +x build.sh
+    - ./build.sh
+    - tar -czvf site.tar.gz html/
+  artifacts:
+    paths:
+      - site.tar.gz
+      - html/
+  when: manual
 
-post_build_test: 
-    stage: deploy_test 
-    script:  
-        - touch result.txt
+post_build_test:
+  stage: deploy_test
+  script:
+    - touch result.txt
 
 deploy website:
-    stage: stage
-    script:
-      - cp -rf ./html/* /var/www/html
-    when: manual
-    tags:
-      - first_runner
-    only:
-        refs:
-            - tags
-            - master
-            - /^release.*$/
-          
-deploy prod:
-    stage: prod
-    script:
-        - echo "running ./build.sh"
-    when: manual
-    only:
-        refs:
-            - tags
-            - master
+  stage: deploy
+  script:
+    - cp -rf ./html/* /var/www/html/
+    - cp site.tar.gz /var/www/html/
+  when: manual
+  tags:
+    - first_runner
+  only:
+    refs:
+      - tags
+      - master
+      - /^release.*$/
 
+deploy prod:
+  stage: prod
+  script:
+    - echo "running production deploy"
+  when: manual
+  only:
+    refs:
+      - tags
+      - master
 
 
    
